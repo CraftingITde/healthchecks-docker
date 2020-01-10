@@ -10,7 +10,8 @@ RUN echo "**** install build packages ****" && \
  apk add --no-cache --upgrade --virtual=build-dependencies \
 	curl \
 	postgresql-dev \
-    gcc
+    gcc \
+	git 
 
 RUN echo "**** install runtime packages ****" && \
  apk add --no-cache --upgrade \
