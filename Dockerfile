@@ -8,7 +8,8 @@ USER root
 
 RUN echo "**** install build packages ****" && \
  apk add --no-cache --upgrade --virtual=build-dependencies \
-	curl 
+	curl \
+	postgresql-dev 
 
 RUN echo "**** install runtime packages ****" && \
  apk add --no-cache --upgrade \
