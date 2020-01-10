@@ -8,7 +8,6 @@ USER root
 
 RUN echo "**** install build packages ****" && \
  apk add --no-cache --upgrade --virtual=build-dependencies \
-	curl \
 	postgresql-dev \
     gcc \
 	git 
@@ -24,12 +23,10 @@ RUN  echo "**** install healthchecks ****" && \
 	HEALTHCHECKS_VERSION=$(curl -sX GET "https://api.github.com/repos/healthchecks/healthchecks/releases/latest" \
 	| awk '/tag_name/{print $4;exit}' FS='[""]'); \
  fi && \
- curl -o \
- /tmp/healthchecks.tar.gz -L \
-	"https://github.com/healthchecks/healthchecks/archive/${HEALTHCHECKS_VERSION}.tar.gz" && \
- tar xf \
- /tmp/healthchecks.tar.gz -C \
-	/app/healthchecks/ --strip-components=1
+ git clone https://github.com/healthchecks/healthchecks.git /app/healthchecks && \
+    cd /app/healthchecks && \
+    git checkout $HEALTHCHECKS_VERSION 
+    
 
 RUN  echo "**** install pip packages ****" && \
  cd /app/healthchecks && \
