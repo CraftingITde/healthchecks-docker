@@ -11,7 +11,8 @@ RUN echo "**** install build packages ****" && \
 	git \
 	postgresql-dev \
     gcc \
-	musl-dev 
+	musl-dev \
+    curl
 
 RUN echo "**** install runtime packages ****" && \
  apk add --no-cache --upgrade \
@@ -39,3 +40,5 @@ RUN echo "**** cleanup ****" && \
  rm -rf \
 	/root/.cache \
 	/tmp/*
+
+ENTRYPOINT ["/entrypoint.sh"]
