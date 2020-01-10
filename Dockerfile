@@ -6,25 +6,13 @@ ARG HEALTHCHECKS_VERSION
 # Install
 USER root
 
-RUN \
- echo "**** install build packages ****" && \
- apk add --no-cache --upgrade --virtual=build-dependencies \
-	curl \
-	gcc \
-	git \
-	jpeg-dev \
-	mariadb-dev \
-	musl-dev \
-	mysql \
-	postgresql-dev \
-	py3-pip \
-	python3-dev \
-	zlib-dev && \
- echo "**** install runtime packages ****" && \
+
+RUN echo "**** install runtime packages ****" && \
  apk add --no-cache --upgrade \
 	mariadb-client \
-	postgresql-client && \
- echo "**** install healthchecks ****" && \
+	postgresql-client
+
+RUN  echo "**** install healthchecks ****" && \
  mkdir -p /app/healthchecks && \
  if [ -z ${HEALTHCHECKS_VERSION+x} ]; then \
 	HEALTHCHECKS_VERSION=$(curl -sX GET "https://api.github.com/repos/healthchecks/healthchecks/releases/latest" \
@@ -35,11 +23,13 @@ RUN \
 	"https://github.com/healthchecks/healthchecks/archive/${HEALTHCHECKS_VERSION}.tar.gz" && \
  tar xf \
  /tmp/healthchecks.tar.gz -C \
-	/app/healthchecks/ --strip-components=1 && \
- echo "**** install pip packages ****" && \
+	/app/healthchecks/ --strip-components=1
+
+RUN  echo "**** install pip packages ****" && \
  cd /app/healthchecks && \
- pip3 install --no-cache-dir -r requirements.txt && \
- echo "**** cleanup ****" && \
+ pip3 install --no-cache-dir -r requirements.txt
+ 
+RUN echo "**** cleanup ****" && \
  apk del --purge \
 	build-dependencies && \
  rm -rf \
