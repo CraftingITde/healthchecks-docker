@@ -23,10 +23,7 @@ RUN \
  echo "**** install runtime packages ****" && \
  apk add --no-cache --upgrade \
 	mariadb-client \
-	postgresql-client \
-	python3 \
-	uwsgi \
-	uwsgi-python3 && \
+	postgresql-client && \
  echo "**** install healthchecks ****" && \
  mkdir -p /app/healthchecks && \
  if [ -z ${HEALTHCHECKS_VERSION+x} ]; then \
