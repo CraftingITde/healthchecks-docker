@@ -18,11 +18,13 @@ RUN  echo "## Get healthchecks from Github" && \
  	mkdir -p /app && \
 	# If Version is not Set use Latest
  	if [ -z ${HEALTHCHECKS_VERSION+x} ]; then \
+	 	echo "#### Getting latest Release!!"; \
 		HEALTHCHECKS_VERSION=$(curl -sX GET "https://api.github.com/repos/healthchecks/healthchecks/releases/latest" | awk '/tag_name/{print $4;exit}' FS='[""]'); \
  	fi && \
  	# Clone Repo
 	 git clone https://github.com/healthchecks/healthchecks.git /app && \
     cd /app && \
+	echo "#### Building Version: $HEALTHCHECKS_VERSION" && \
     git checkout $HEALTHCHECKS_VERSION 
     
 
