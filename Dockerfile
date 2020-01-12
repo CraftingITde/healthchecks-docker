@@ -11,7 +11,8 @@ RUN echo "## build packages" && \
     gcc \
 	make \
 	musl-dev \
-    linux-headers
+    linux-headers \
+	jq
 
 
 RUN  echo "## Get healthchecks from Github" && \
@@ -19,7 +20,7 @@ RUN  echo "## Get healthchecks from Github" && \
 	# If Version is not Set use Latest
  	if [ -z ${HEALTHCHECKS_VERSION+x} ]; then \
 	 	echo "#### Getting latest Release!!"; \
-		HEALTHCHECKS_VERSION=$(curl -sX GET "https://api.github.com/repos/healthchecks/healthchecks/releases/latest" | awk '/tag_name/{print $4;exit}' FS='[""]'); \
+		HEALTHCHECKS_VERSION=$(curl -s 'https://api.github.com/repos/healthchecks/healthchecks/releases/latest' | jq -r '.tag_name'); \
  	fi && \
  	# Clone Repo
 	 git clone https://github.com/healthchecks/healthchecks.git /app && \
@@ -34,7 +35,9 @@ RUN  echo "## Pip requirements" && \
  	pip install --prefix="/build" --no-warn-script-location -r requirements.txt   \
 	 uwsgi
 
-
+####################################
+#Runtime!!##########################
+####################################
 FROM python:3.8.1-alpine3.11
 
 LABEL maintainer="Kai Struessmann <kstrusmann@craftingit.de>"

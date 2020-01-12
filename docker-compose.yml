@@ -5,11 +5,11 @@ services:
     image: test
     container_name: healthchecks
     environment:
-      - SITE_ROOT=localhost
       - SITE_NAME=test
       - DEFAULT_FROM_EMAIL=test@test.local
-      - SUPERUSER_EMAIL=tets@test.local
+      - SUPERUSER_EMAIL=test@test.local
       - SUPERUSER_PASSWORD=123456
+      - REGISTRATION_OPEN=False
       - FIFTEEN_MINUTES_WATCHDOG1=http://localhost:8000/ping/88edeb98-40b8-48fc-a1c7-fd2b46b98a9f
       - FIFTEEN_MINUTES_WATCHDOG2=https://hc-ping.com/a054fbf0-5d96-4f69-bace-9c396f319b4a
     volumes:
