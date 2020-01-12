@@ -1,0 +1,18 @@
+sudo: required
+language: bash
+services:
+  - docker
+
+script:
+- bash .ci/build.sh
+
+deploy:
+  - provider: script
+    script: bash .ci/docker_push_dev.sh 
+    on:
+      branch: master
+
+  - provider: script
+    script: bash .ci/docker_push_tag.sh
+    on:
+      tags: true
