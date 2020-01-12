@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [! -z "$TRAVIS_TAG" ] 
+if [[ -z ${TRAVIS_TAG} ]];
 then
   docker build -t healthchecks-docker .
 else
