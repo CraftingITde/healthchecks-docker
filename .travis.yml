@@ -4,7 +4,7 @@ services:
   - docker
 
 script:
-- docker build -t healthchecks-docker .
+- .ci/build.sh
 
 #deploy:
 #  - provider: script

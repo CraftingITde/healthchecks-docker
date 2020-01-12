@@ -1,5 +1,5 @@
 FROM python:3.8.1-alpine3.11 as build-env
-ARG HEALTHCHECKS_VERSIONv
+ARG HEALTHCHECKS_VERSION
 # Install
 USER root
 
@@ -43,11 +43,14 @@ ENV DB_NAME /data/hc.sqlite
 WORKDIR /app
 
 RUN echo "## runtime packages" \
- &&  apk add --no-cache --upgrade \
-		mariadb-client \
+ 	&& apk add --no-cache --upgrade \
+	   	mariadb-client \
 		postgresql-client \
 		libpq \
-		mailcap 
+		mailcap \
+	    supervisor \
+		curl \
+		dcron
 
 RUN addgroup -g 1000 -S healthchecks && \
     adduser -u 1000 -S healthchecks -G healthchecks
@@ -57,13 +60,15 @@ COPY --from=build-env /app /app
 
 RUN mkdir /data && chown healthchecks:healthchecks /data && chown healthchecks:healthchecks -R /app
 
+RUN mkdir -p /var/log/cron \
+	&& touch /var/log/cron/cron.log \
+	&& chown healthchecks:healthchecks /var/log/cron -R
+
 VOLUME /data
 
 COPY container-fs /
 
-RUN chmod +x /entrypoint.sh
-#USER healthchecks 
-
+RUN chmod +x /*.sh
 
 EXPOSE 8000/tcp
 ENTRYPOINT ["/entrypoint.sh"]
