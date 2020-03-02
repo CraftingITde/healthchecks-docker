@@ -18,8 +18,8 @@ if [ "$?" -eq "0" ]; then
 else
 	echo "Committing changes"
 	# add changes and Pusch
-	#git add --all
-	#git commit --message "Bump to latest version ${VERSION}"
-	#git push origin master
+	git add --all
+	git commit --message "Bump to latest version ${VERSION}"
+	git push origin master
     exit 0
 fi
