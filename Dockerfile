@@ -1,5 +1,5 @@
 FROM python:3.8.1-alpine3.11 as build-env
-ARG HEALTHCHECKS_VERSION
+ARG HEALTHCHECKS_VERSION=v1.12.0
 # Install
 USER root
 
@@ -17,11 +17,6 @@ RUN echo "## build packages" && \
 
 RUN  echo "## Get healthchecks from Github" && \
 	mkdir -p /app && \
-	# If Version is not Set use Latest
-	if [ -z ${HEALTHCHECKS_VERSION+x} ]; then \
-		echo "#### Getting latest Release!!"; \
-		HEALTHCHECKS_VERSION=$(curl -s 'https://api.github.com/repos/healthchecks/healthchecks/releases/latest' | jq -r '.tag_name'); \
-	fi && \
 	# Clone Repo
 	git clone https://github.com/healthchecks/healthchecks.git /app && \
 	cd /app && \
