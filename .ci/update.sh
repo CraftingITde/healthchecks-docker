@@ -3,6 +3,7 @@
 LATEST_VERSION=$(curl -s 'https://api.github.com/repos/healthchecks/healthchecks/releases/latest' | jq -r '.tag_name');
 CURRENT_VERSION=$(sed -nr 's/ARG HEALTHCHECKS_VERSION=*(.+)/\1/p' Dockerfile);
 REPO_ADRESS=${git config --get remote.origin.url | sed 's/https\?:\/\///'}
+REPO_ADRESS=$(git config --get remote.origin.url | sed 's~http[s]*://~~g')
 
 echo "Found versions:"
 echo "  Latest:  ${LATEST_VERSION}"
@@ -23,7 +24,7 @@ else
     git config user.email "$username@craftingit.de"
     git add Dockerfile
 	git commit --message "Bump to latest version ${VERSION}"
-    git push https://$username:$password@$REPO_ADRESS
+    git push https://$username:$password@$REPO_ADRESS HEAD:master
 fi
 
 git show "${LATEST_VERSION}" &> /dev/null
