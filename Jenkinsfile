@@ -1,11 +1,8 @@
 @Library('CraftingIT-Library') _ 
 
 pipeline {
-	agent {
-			label 'RELEASE'
-			}
+	agent { label 'RELEASE' }
     triggers { cron('H */12 * * * ') }
-
 	stages{
         stage("Deploy") {  
             when { branch 'master' }
