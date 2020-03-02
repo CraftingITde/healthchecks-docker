@@ -26,6 +26,7 @@ else
     git push https://$username:$password@$REPO_ADRESS HEAD:master
 fi
 
+git fetch --tags &> /dev/null
 git show "${LATEST_VERSION}" &> /dev/null
 if [ "$?" -eq "0" ]; then
 	echo "Tag '${LATEST_VERSION}' already exist. Skipping..."
