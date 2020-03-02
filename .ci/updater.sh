@@ -10,15 +10,16 @@ echo ""
 
 sed --in-place "s/HEALTHCHECKS_VERSION=${CURRENT_VERSION}/HEALTHCHECKS_VERSION=${LATEST_VERSION}/g" Dockerfile
 
-git diff --exit-code .
+git diff --exit-code . > /dev/null
 
 if [ "$?" -eq "0" ]; then
 	echo "No changes made. Nothig to do..."
+    exit 0
 else
 	echo "Committing changes"
 	# add changes and Pusch
 	#git add --all
 	#git commit --message "Bump to latest version ${VERSION}"
 	#git push origin master
-
+    exit 0
 fi
