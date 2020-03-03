@@ -1,4 +1,4 @@
-# healthchecks-docker
+# healthchecks-docker [![Build Status](https://travis-ci.com/CraftingITde/healthchecks-docker.svg?branch=master)](https://travis-ci.com/CraftingITde/healthchecks-docker)
 Simple Docker image for https://github.com/healthchecks/healthchecks  
 
 [![](https://badgen.net/badge/docker/Docker?icon&label=View%20on)](https://hub.docker.com/r/craftingit/healthchecks-docker) ![](https://badgen.net/docker/pulls/craftingit/healthchecks-docker?icon=docker&label=pulls) ![](https://badgen.net/docker/stars/craftingit/healthchecks-docker?icon=docker&label=stars)
