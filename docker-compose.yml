@@ -1,0 +1,19 @@
+---
+version: "2"
+services:
+  healthchecks:
+    image: test
+    container_name: healthchecks
+    environment:
+      - SITE_NAME=test
+      - DEFAULT_FROM_EMAIL=test@test.local
+      - SUPERUSER_EMAIL=test@test.local
+      - SUPERUSER_PASSWORD=123456
+      - REGISTRATION_OPEN=False
+    #  - FIFTEEN_MINUTES_WATCHDOG1=http://localhost:8000/ping/111-111-111-1111
+    #  - FIFTEEN_MINUTES_WATCHDOG2=https://hc-ping.com/111-111-111-1111
+    volumes:
+      - ./data:/data
+    ports:
+      - 8000:8000
+    restart: unless-stopped
