@@ -1,4 +1,4 @@
-FROM python:3.8.3-alpine3.11 as build-env
+FROM python:3.8.5-alpine3.11 as build-env
 ARG HEALTHCHECKS_VERSION=v1.15.0
 # Install
 USER root
@@ -32,7 +32,7 @@ RUN  echo "## Pip requirements" && \
 ####################################
 #Runtime!!##########################
 ####################################
-FROM python:3.8.3-alpine3.11
+FROM python:3.8.5-alpine3.11
 
 LABEL maintainer="Kai Struessmann <kstrusmann@craftingit.de>"
 
