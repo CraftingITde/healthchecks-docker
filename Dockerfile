@@ -11,7 +11,12 @@ RUN echo "## build packages" && \
 	gcc \
 	make \
 	musl-dev \
-	linux-headers 
+	linux-headers \
+	build-dependencies \
+	build-base \
+	libressl-dev \
+	libffi-dev \
+	python3-dev
 
 
 RUN  echo "## Get healthchecks from Github" && \
