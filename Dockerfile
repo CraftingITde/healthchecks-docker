@@ -17,6 +17,9 @@ RUN echo "## build packages" && \
 	libressl-dev \
 	libffi-dev \
 	python3-dev
+	
+RUN echo "## Install Rust" && \
+	curl https://sh.rustup.rs -sSf | sh
 
 
 RUN  echo "## Get healthchecks from Github" && \
