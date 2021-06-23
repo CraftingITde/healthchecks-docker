@@ -1,7 +1,9 @@
-FROM python:3.8.7-alpine3.11 as build-env
+FROM python:3.9.5-alpine3.13 as build-env
 ARG HEALTHCHECKS_VERSION=v1.20.0
 # Install
 USER root
+
+ENV CRYPTOGRAPHY_DONT_BUILD_RUST=true
 
 RUN echo "## build packages" && \
 	apk add --no-cache --upgrade --virtual=build-dependencies \
@@ -11,15 +13,12 @@ RUN echo "## build packages" && \
 	gcc \
 	make \
 	musl-dev \
+	openssl-dev \
 	linux-headers \
 	build-dependencies \
 	build-base \
 	libressl-dev \
-	libffi-dev \
-	python3-dev
-	
-RUN echo "## Install Rust" && \
-	curl https://sh.rustup.rs -sSf | sh
+	libffi-dev 
 
 
 RUN  echo "## Get healthchecks from Github" && \
@@ -34,13 +33,13 @@ RUN  echo "## Get healthchecks from Github" && \
 RUN  echo "## Pip requirements" && \
 	cd /app && \
 	mkdir -p /build && \
-	pip install --prefix="/build" --no-warn-script-location -r requirements.txt   \
+	pip3 install --prefix="/build" --no-warn-script-location -r requirements.txt \
 	uwsgi
 
 ####################################
 #Runtime!!##########################
 ####################################
-FROM python:3.8.7-alpine3.11
+FROM python:3.9.5-alpine3.13
 
 LABEL maintainer="Kai Struessmann <kstrusmann@craftingit.de>"
 
@@ -57,7 +56,7 @@ RUN echo "## runtime packages" \
 	mailcap \
 	supervisor \
 	curl \
-	dcron
+	dcron 
 
 RUN addgroup -g 1000 -S healthchecks && \
 	adduser -u 1000 -S healthchecks -G healthchecks
@@ -78,4 +77,4 @@ COPY container-fs /
 RUN chmod +x /*.sh
 
 EXPOSE 8000/tcp
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["sh", "/entrypoint.sh"]
