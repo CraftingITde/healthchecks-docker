@@ -1,9 +1,13 @@
 @Library('CraftingIT-Library') _ 
 
 pipeline {
-	agent { label 'RELEASE' }
-    triggers { cron('H */12 * * * ') }
-    options { disableConcurrentBuilds() }
+    agent { label 'RELEASE' }
+    triggers { cron('H */12 * * * ') }    
+    options { 
+	    disableConcurrentBuilds()
+      	    timeout(time: 30, unit: 'MINUTES')
+            disableResume()
+    }
 	stages{
         stage("Deploy") {  
             when {  
