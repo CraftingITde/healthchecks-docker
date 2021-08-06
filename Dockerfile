@@ -1,5 +1,5 @@
 FROM python:3.9.5-alpine3.13 as build-env
-ARG HEALTHCHECKS_VERSION=v1.21.0
+ARG HEALTHCHECKS_VERSION=v1.22.0
 # Install
 USER root
 
