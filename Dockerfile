@@ -78,7 +78,9 @@ RUN echo "## runtime packages" \
 	mailcap \
 	supervisor \
 	curl \
-	dcron 
+	dcron \
+    uwsgi \
+    uwsgi-python3
 
 RUN addgroup -g 1000 -S healthchecks && \
 	adduser -u 1000 -S healthchecks -G healthchecks
