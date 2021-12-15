@@ -54,9 +54,8 @@ RUN  echo "## Get healthchecks from Github" && \
 
 RUN  echo "## Pip requirements" && \
 	cd /app && \
-	mkdir -p /build && \
-	pip3 install --prefix="/build" --no-warn-script-location -r requirements.txt \
-	cryptography
+	pip wheel --wheel-dir /wheels -r requirements.txt \
+	pip wheel --wheel-dir /wheels apprise uwsgi
 
 ####################################
 #Runtime!!##########################
@@ -68,6 +67,7 @@ LABEL maintainer="Kai Struessmann <kstrusmann@craftingit.de>"
 ENV DEBUG False
 ENV USE_PAYMENTS False
 ENV DB_NAME /data/hc.sqlite
+ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 RUN echo "## runtime packages" \
@@ -78,17 +78,18 @@ RUN echo "## runtime packages" \
 	mailcap \
 	supervisor \
 	curl \
-	dcron \
-    uwsgi \
-    uwsgi-python3 
+	dcron 
 
 RUN addgroup -g 1000 -S healthchecks && \
 	adduser -u 1000 -S healthchecks -G healthchecks
 
-COPY --from=build-env /build /usr/local
-COPY --from=build-env /app /app
+COPY --from=build-env /app/requirements.txt /app
+COPY --from=build-env /wheels /wheels
 
 RUN mkdir /data && chown healthchecks:healthchecks /data && chown healthchecks:healthchecks -R /app
+
+RUN pip install --no-cache /wheels/*
+COPY . /app/
 
 RUN mkdir -p /var/log/cron \
 	&& touch /var/log/cron/cron.log \
