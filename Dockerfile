@@ -89,7 +89,7 @@ COPY --from=build-env /wheels /wheels
 RUN mkdir /data && chown healthchecks:healthchecks /data && chown healthchecks:healthchecks -R /app
 
 RUN pip install --no-cache /wheels/*
-COPY . /app/
+COPY --from=build-env /app /app
 
 RUN mkdir -p /var/log/cron \
 	&& touch /var/log/cron/cron.log \
