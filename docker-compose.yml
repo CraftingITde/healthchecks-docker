@@ -2,7 +2,7 @@
 version: "2"
 services:
   healthchecks:
-    image: test
+    image: healthchecks-docker 
     container_name: healthchecks
     environment:
       - SITE_NAME=test

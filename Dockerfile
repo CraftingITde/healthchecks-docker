@@ -3,8 +3,6 @@ ARG HEALTHCHECKS_VERSION=v1.24.1
 # Install
 USER root
 
-ENV CRYPTOGRAPHY_DONT_BUILD_RUST=true
-
 RUN echo "## build packages" && \
 	apk add --no-cache --upgrade --virtual=build-dependencies \
 	git \
@@ -18,8 +16,32 @@ RUN echo "## build packages" && \
 	build-dependencies \
 	build-base \
 	libressl-dev \
-	libffi-dev 
-
+	libffi-dev \
+	build-base \
+	cairo \
+	cairo-dev \
+	cargo \
+	freetype-dev \
+	gcc \
+	gdk-pixbuf-dev \
+	gettext \
+	jpeg-dev \
+	lcms2-dev \
+	libffi-dev \
+	musl-dev \
+	openjpeg-dev \
+	openssl-dev \
+	pango-dev \
+	poppler-utils \
+	postgresql-client \
+	postgresql-dev \
+	py-cffi \
+	python3-dev \
+	rust \
+	tcl-dev \
+	tiff-dev \
+	tk-dev \
+	zlib-dev
 
 RUN  echo "## Get healthchecks from Github" && \
 	mkdir -p /app && \
@@ -34,7 +56,8 @@ RUN  echo "## Pip requirements" && \
 	cd /app && \
 	mkdir -p /build && \
 	pip3 install --prefix="/build" --no-warn-script-location -r requirements.txt \
-	uwsgi
+	uwsgi \
+	cryptography
 
 ####################################
 #Runtime!!##########################
