@@ -85,13 +85,12 @@ RUN echo "## runtime packages" \
 RUN addgroup -g 1000 -S healthchecks && \
 	adduser -u 1000 -S healthchecks -G healthchecks
 
-COPY --from=build-env /app/requirements.txt /app
+COPY --from=build-env /app /app
 COPY --from=build-env /wheels /wheels
 
 RUN mkdir /data && chown healthchecks:healthchecks /data && chown healthchecks:healthchecks -R /app
 
 RUN pip install --no-cache /wheels/*
-COPY --from=build-env /app /app
 
 RUN mkdir -p /var/log/cron \
 	&& touch /var/log/cron/cron.log \
