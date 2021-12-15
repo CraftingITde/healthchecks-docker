@@ -56,7 +56,6 @@ RUN  echo "## Pip requirements" && \
 	cd /app && \
 	mkdir -p /build && \
 	pip3 install --prefix="/build" --no-warn-script-location -r requirements.txt \
-	uwsgi \
 	cryptography
 
 ####################################
@@ -79,7 +78,9 @@ RUN echo "## runtime packages" \
 	mailcap \
 	supervisor \
 	curl \
-	dcron 
+	dcron \
+    uwsgi \
+    uwsgi-python 
 
 RUN addgroup -g 1000 -S healthchecks && \
 	adduser -u 1000 -S healthchecks -G healthchecks
