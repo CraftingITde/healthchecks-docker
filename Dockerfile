@@ -1,47 +1,14 @@
-FROM python:3.10.0-alpine3.13 as build-env
+FROM python:3.9-slim-buster as build-env
 ARG HEALTHCHECKS_VERSION=v1.23.1
 # Install
 USER root
 
 RUN echo "## build packages" && \
-	apk add --no-cache --upgrade --virtual=build-dependencies \
+	apt update && apt install -y \
+	build-essential \
+	libpq-dev \
 	git \
-	curl \
-	postgresql-dev \
-	gcc \
-	make \
-	musl-dev \
-	openssl-dev \
-	linux-headers \
-	build-dependencies \
-	build-base \
-	libressl-dev \
-	libffi-dev \
-	build-base \
-	cairo \
-	cairo-dev \
-	cargo \
-	freetype-dev \
-	gcc \
-	gdk-pixbuf-dev \
-	gettext \
-	jpeg-dev \
-	lcms2-dev \
-	libffi-dev \
-	musl-dev \
-	openjpeg-dev \
-	openssl-dev \
-	pango-dev \
-	poppler-utils \
-	postgresql-client \
-	postgresql-dev \
-	py-cffi \
-	python3-dev \
-	rust \
-	tcl-dev \
-	tiff-dev \
-	tk-dev \
-	zlib-dev
+	curl 
 
 RUN  echo "## Get healthchecks from Github" && \
 	mkdir -p /app && \
@@ -60,7 +27,7 @@ RUN  echo "## Pip requirements" && \
 ####################################
 #Runtime!!##########################
 ####################################
-FROM python:3.10.0-alpine3.13
+FROM python:3.9-slim-buster
 
 LABEL maintainer="Kai Struessmann <kstrusmann@craftingit.de>"
 
@@ -68,22 +35,20 @@ ENV DEBUG False
 ENV USE_PAYMENTS False
 ENV DB_NAME /data/hc.sqlite
 ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
 RUN echo "## runtime packages" \
-	&& apk add --no-cache --upgrade \
-	mariadb-client \
-	postgresql-client \
-	libpq \
-	mailcap \
+	&&  apt update && \
+    apt install -y libpq5 \
 	supervisor \
 	curl \
-	dcron \
-    uwsgi \
-    uwsgi-python3
+	cron \
+    uwsgi && \
+    rm -rf /var/apt/cache
 
-RUN addgroup -g 1000 -S healthchecks && \
-	adduser -u 1000 -S healthchecks -G healthchecks
+RUN groupadd  -g 1000 healthchecks && \
+	useradd -u 1000 -g healthchecks healthchecks 
 
 COPY --from=build-env /app /app
 COPY --from=build-env /wheels /wheels
