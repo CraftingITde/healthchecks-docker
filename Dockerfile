@@ -80,7 +80,7 @@ RUN echo "## runtime packages" \
 	curl \
 	dcron \
     uwsgi \
-    uwsgi-python 
+    uwsgi-python3 
 
 RUN addgroup -g 1000 -S healthchecks && \
 	adduser -u 1000 -S healthchecks -G healthchecks
