@@ -12,3 +12,30 @@ steps:
       from_secret: docker_password
     repo: craftingit/healthchecks-docker
     auto_tag: true
+
+trigger:
+  event:
+  - push
+  - pull_request
+  - tag
+
+---
+kind: pipeline
+type: kubernetes
+name: kube-linter-docker-updates
+
+steps:
+- name: update dockerfile
+  image: craftingit/ci-tools-docker
+  commands:
+    - bash .ci/updater.sh
+
+- name: push commit
+  image: appleboy/drone-git-push
+  settings:
+    remote_name: origin
+    branch: main
+    
+trigger:
+  event:
+  - cron

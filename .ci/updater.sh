@@ -20,11 +20,9 @@ else
 	echo "Committing changes"
 #	add changes and Push
     git config user.name "CraftingIT-Bot"
-    git config user.email "$username@craftingit.de"
+    git config user.email "craftingitbot@craftingit.de"
     git add Dockerfile
 	git commit --message "Bump to latest version ${VERSION}"
-    git push https://$username:$password@$REPO_ADRESS HEAD:master
-fi
 
 git fetch --tags &> /dev/null
 git show "${LATEST_VERSION}" &> /dev/null
@@ -34,6 +32,4 @@ else
 
 	echo "Tag '${LATEST_VERSION}' not exist. Creating..."
     git tag -a ${LATEST_VERSION} -m "New Version ${LATEST_VERSION} by CraftingIT-Bot"
-
-    git push https://$username:$password@$REPO_ADRESS --tags
 fi
