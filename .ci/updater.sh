@@ -32,4 +32,5 @@ else
 
 	echo "Tag '${LATEST_VERSION}' not exist. Creating..."
     git tag -a ${LATEST_VERSION} -m "New Version ${LATEST_VERSION} by CraftingIT-Bot"
+    
 fi
