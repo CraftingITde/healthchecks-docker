@@ -23,6 +23,7 @@ else
     git config user.email "craftingitbot@craftingit.de"
     git add Dockerfile
 	git commit --message "Bump to latest version ${VERSION}"
+fi
 
 git fetch --tags &> /dev/null
 git show "${LATEST_VERSION}" &> /dev/null
@@ -32,5 +33,5 @@ else
 
 	echo "Tag '${LATEST_VERSION}' not exist. Creating..."
     git tag -a ${LATEST_VERSION} -m "New Version ${LATEST_VERSION} by CraftingIT-Bot"
-    
+
 fi
