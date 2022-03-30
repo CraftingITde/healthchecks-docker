@@ -39,6 +39,7 @@ steps:
       from_secret: GITHUB_SSH_KEY
     branch: master
     local_ref: master
+    followtags: true
 
 trigger:
   event:
