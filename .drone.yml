@@ -33,10 +33,10 @@ steps:
 - name: push commit
   image: appleboy/drone-git-push
   settings:
+    remote_name: originssh
     remote: git@github.com:CraftingITde/healthchecks-docker.git
     ssh_key:
       from_secret: GITHUB_SSH_KEY
-    remote_name: origin
     branch: master
     local_ref: master
 
