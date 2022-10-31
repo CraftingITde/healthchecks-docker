@@ -7,9 +7,15 @@ RUN echo "## build packages" && \
 	apt update && apt install -y \
 	build-essential \
 	libpq-dev \
+	libmariadb-dev \
+	libffi-dev \
+	libssl-dev  \
+	libcurl4-openssl-dev \
+	libpython3-dev \
 	git \
 	curl 
 
+ENV CARGO_NET_GIT_FETCH_WITH_CLI true
 RUN  echo "## Get healthchecks from Github" && \
 	mkdir -p /app && \
 	# Clone Repo
@@ -21,8 +27,9 @@ RUN  echo "## Get healthchecks from Github" && \
 
 RUN  echo "## Pip requirements" && \
 	cd /app && \
-	pip wheel --wheel-dir /wheels -r requirements.txt \
-	pip wheel --wheel-dir /wheels apprise uwsgi
+    pip install --upgrade pip && \
+	pip wheel --wheel-dir /wheels apprise uwsgi mysqlclient minio \
+	pip wheel --wheel-dir /wheels -r requirements.txt 
 
 ####################################
 #Runtime!!##########################
@@ -41,6 +48,8 @@ WORKDIR /app
 RUN echo "## runtime packages" \
 	&&  apt update && \
     apt install -y libpq5 \
+	libcurl4 \
+	libmariadb3 \
 	supervisor \
 	curl \
 	cron \
@@ -59,7 +68,7 @@ RUN pip install --no-cache /wheels/*
 
 RUN mkdir -p /var/log/cron \
 	&& touch /var/log/cron/cron.log \
-	&& chown healthchecks:healthchecks /var/log/cron -R
+	&& chown healthchecks:healthchecks /var/log/cron -R 
 
 VOLUME /data
 
