@@ -1,4 +1,4 @@
-FROM python:3.11.0-slim-buster as build-env
+FROM python:3.11.1-slim-buster as build-env
 ARG HEALTHCHECKS_VERSION=v2.6.1
 # Install
 USER root
@@ -34,7 +34,7 @@ RUN  echo "## Pip requirements" && \
 ####################################
 #Runtime!!##########################
 ####################################
-FROM python:3.11.0-slim-buster
+FROM python:3.11.1-slim-buster
 
 LABEL maintainer="Kai Struessmann <kstrusmann@craftingit.de>"
 
