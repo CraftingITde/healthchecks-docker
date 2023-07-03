@@ -1,5 +1,5 @@
 FROM python:3.11.0-slim-buster as build-env
-ARG HEALTHCHECKS_VERSION=v2.9.2
+ARG HEALTHCHECKS_VERSION=v2.10
 # Install
 USER root
 
