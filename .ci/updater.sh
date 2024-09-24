@@ -3,9 +3,11 @@
 LATEST_VERSION=$(curl -s 'https://api.github.com/repos/healthchecks/healthchecks/releases/latest' | jq -r '.tag_name');
 CURRENT_VERSION=$(sed -nr 's/ARG HEALTHCHECKS_VERSION=*(.+)/\1/p' Dockerfile);
 REPO_ADRESS=$(git config --get remote.origin.url | sed 's~http[s]*://~~g')
+SEMVER_VERSION=$(echo "${LATEST_VERSION}" | sed 's/^v//')
 
 echo "Found versions:"
 echo "  Latest:  ${LATEST_VERSION}"
+echo "  Latest Semver:  ${SEMVER_VERSION}"
 echo "  Current: ${CURRENT_VERSION}"
 echo "  Repo:    ${REPO_ADRESS}"
 
@@ -26,12 +28,12 @@ else
 fi
 
 git fetch --tags &> /dev/null
-git show "${LATEST_VERSION}" &> /dev/null
+git show "${SEMVER_VERSION}" &> /dev/null
 if [ "$?" -eq "0" ]; then
-	echo "Tag '${LATEST_VERSION}' already exist. Skipping..."
+	echo "Tag '${SEMVER_VERSION}' already exist. Skipping..."
 else
 
-	echo "Tag '${LATEST_VERSION}' not exist. Creating..."
-    git tag -a ${LATEST_VERSION} -m "New Version ${LATEST_VERSION} by CraftingIT-Bot"
+	echo "Tag '${SEMVER_VERSION}' not exist. Creating..."
+    git tag -a ${SEMVER_VERSION} -m "New Version ${SEMVER_VERSION} by CraftingIT-Bot"
 
 fi
