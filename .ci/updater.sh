@@ -4,6 +4,10 @@ LATEST_VERSION=$(curl -s 'https://api.github.com/repos/healthchecks/healthchecks
 CURRENT_VERSION=$(sed -nr 's/ARG HEALTHCHECKS_VERSION=*(.+)/\1/p' Dockerfile);
 REPO_ADRESS=$(git config --get remote.origin.url | sed 's~http[s]*://~~g')
 SEMVER_VERSION=$(echo "${LATEST_VERSION}" | sed 's/^v//')
+# Prüfen, ob die Version nur Major und Minor enthält und eine Patch-Version ergänzen
+if [[ "$SEMVER_VERSION" =~ ^[0-9]+\.[0-9]+$ ]]; then
+  SEMVER_VERSION="${SEMVER_VERSION}.0"
+fi
 
 echo "Found versions:"
 echo "  Latest:  ${LATEST_VERSION}"
