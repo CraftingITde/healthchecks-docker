@@ -10,6 +10,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Fix permissions
+      run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
     - name: Update Dockerfile
       run: bash .ci/updater.sh
