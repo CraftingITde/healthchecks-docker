@@ -6,7 +6,7 @@ on:
 jobs:
   update-dockerfile:
     runs-on: ubuntu-latest
-    container: craftingit/ci-tools-docker
+    container: craftingit/ci-tools-docker:0.0.1
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
