@@ -1,4 +1,4 @@
-FROM python:3.13.2-bookworm as build-env
+FROM python:3.13.2-slim-bookworm as build-env
 ARG HEALTHCHECKS_VERSION=v3.9
 # Install
 USER root
@@ -28,17 +28,18 @@ RUN  echo "## Get healthchecks from Github" && \
 RUN  echo "## Pip requirements" && \
 	cd /app && \
     pip install --upgrade pip && \
-	pip wheel --wheel-dir /wheels apprise uwsgi mysqlclient minio \
+	pip wheel --wheel-dir /wheels apprise uwsgi mysqlclient minio && \
 	pip wheel --wheel-dir /wheels -r requirements.txt 
 
 ####################################
 #Runtime!!##########################
 ####################################
-FROM python:3.13.2-bookworm
+FROM python:3.13.2-slim-bookworm
 
 LABEL maintainer="Kai Struessmann <kstrusmann@craftingit.de>"
 
 ENV DEBUG False
+ENV DEVELOPMENT_MODE False
 ENV USE_PAYMENTS False
 ENV DB_NAME /data/hc.sqlite
 ENV PYTHONUNBUFFERED=1
@@ -47,13 +48,12 @@ WORKDIR /app
 
 RUN echo "## runtime packages" \
 	&&  apt update && \
-    apt install -y libpq5 \
+	apt install -y --no-install-recommends libpq5 \
 	libcurl4 \
 	libmariadb3 \
 	supervisor \
 	curl \
-	cron \
-    uwsgi && \
+	uwsgi && \
     rm -rf /var/apt/cache
 
 RUN groupadd  -g 1000 healthchecks && \
@@ -66,10 +66,6 @@ RUN mkdir /data && chown healthchecks:healthchecks /data && chown healthchecks:h
 
 RUN pip install --no-cache /wheels/*
 
-RUN mkdir -p /var/log/cron \
-	&& touch /var/log/cron/cron.log \
-	&& chown healthchecks:healthchecks /var/log/cron -R 
-
 VOLUME /data
 
 COPY container-fs /
@@ -78,3 +74,6 @@ RUN chmod +x /*.sh
 
 EXPOSE 8000/tcp
 ENTRYPOINT ["sh", "/entrypoint.sh"]
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+	CMD curl -f http://localhost:8000/ || exit 
