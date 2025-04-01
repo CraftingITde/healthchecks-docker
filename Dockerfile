@@ -1,4 +1,4 @@
-FROM python:3.13.2-slim-bookworm as build-env
+FROM python:3.13.2-bookworm as build-env
 ARG HEALTHCHECKS_VERSION=v3.9
 # Install
 USER root
@@ -28,7 +28,7 @@ RUN  echo "## Get healthchecks from Github" && \
 RUN  echo "## Pip requirements" && \
 	cd /app && \
     pip install --upgrade pip && \
-	pip wheel --wheel-dir /wheels apprise uwsgi mysqlclient minio \
+	pip wheel --wheel-dir /wheels apprise uwsgi mysqlclient minio && \
 	pip wheel --wheel-dir /wheels -r requirements.txt 
 
 ####################################
