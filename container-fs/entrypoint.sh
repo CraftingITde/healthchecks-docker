@@ -1,11 +1,20 @@
-#!/bin/sh
-./manage.py migrate --noinput
-./manage.py compress
-./manage.py collectstatic --noinput 
+#!/bin/bash
 
-if [ -n "$SUPERUSER_EMAIL" ] && [ -n "$SUPERUSER_PASSWORD" ];
-then
-cat << EOF | ./manage.py shell
+set -e  # Beenden bei Fehlern
+
+echo "Running migrations..."
+cd /app
+./manage.py migrate --noinput
+
+echo "Collecting static files..."
+./manage.py collectstatic --noinput
+
+echo "Compressing assets..."
+./manage.py compress --force
+
+if [ -n "$SUPERUSER_EMAIL" ] && [ -n "$SUPERUSER_PASSWORD" ]; then
+    echo "Creating superuser if needed..."
+    cat << EOF | ./manage.py shell
 from django.contrib.auth.models import User;
 
 username = 'admin';
@@ -20,5 +29,5 @@ else:
 EOF
 fi
 
+echo "Starting supervisor..."
 exec supervisord -c /etc/supervisor/supervisord.conf
-

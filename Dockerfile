@@ -72,8 +72,11 @@ COPY container-fs /
 
 RUN chmod +x /*.sh
 
-EXPOSE 8000/tcp
-ENTRYPOINT ["sh", "/entrypoint.sh"]
+RUN chmod +x /app/fetchstatus.py
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-	CMD curl -f http://localhost:8000/ || exit 
+  CMD python /app/fetchstatus.py
+
+EXPOSE 8000/tcp
+EXPOSE 2525/tcp
+ENTRYPOINT ["sh", "/entrypoint.sh"]
