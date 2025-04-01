@@ -28,7 +28,7 @@ RUN  echo "## Get healthchecks from Github" && \
 RUN  echo "## Pip requirements" && \
 	cd /app && \
     pip install --upgrade pip && \
-	pip wheel --wheel-dir /wheels apprise uwsgi mysqlclient minio && \
+	pip wheel --wheel-dir /wheels apprise uwsgi mysqlclient minio \
 	pip wheel --wheel-dir /wheels -r requirements.txt 
 
 ####################################
