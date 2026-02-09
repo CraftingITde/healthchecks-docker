@@ -1,5 +1,5 @@
 FROM python:3.14.2-bookworm as build-env
-ARG HEALTHCHECKS_VERSION=v4.0
+ARG HEALTHCHECKS_VERSION=null
 # Install
 USER root
 
