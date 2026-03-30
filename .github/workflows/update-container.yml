@@ -9,7 +9,7 @@ jobs:
     container: craftingit/ci-tools-docker:0.0.1
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
 
@@ -20,7 +20,7 @@ jobs:
       run: bash .ci/updater.sh
     
     - name: Push changes
-      uses: ad-m/github-push-action@v0.8.0
+      uses: ad-m/github-push-action@v1.0.0
       with:
         github_token: ${{ secrets.PAT_BOT }}
         branch: ${{ github.ref }}
