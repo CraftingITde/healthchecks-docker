@@ -1,4 +1,4 @@
-FROM python:3.15.1-bookworm as build-env
+FROM python:3.15.2-bookworm as build-env
 ARG HEALTHCHECKS_VERSION=v5.0.2
 # Install
 USER root
@@ -34,7 +34,7 @@ RUN  echo "## Pip requirements" && \
 ####################################
 #Runtime!!##########################
 ####################################
-FROM python:3.15.1-slim-bookworm
+FROM python:3.15.2-slim-bookworm
 
 LABEL maintainer="Kai Struessmann <kstrusmann@craftingit.de>"
 
